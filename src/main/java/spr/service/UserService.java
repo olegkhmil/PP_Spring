@@ -14,7 +14,11 @@ public interface UserService {
 
     boolean addUser(String name, int age, String email, String password, String role);
 
+    boolean addUser(User user);
+
     public boolean deleteUser(Long id);
 
     public boolean updateUser(Long id, String name, int age, String email, String password, String role);
+
+    public boolean updateUser(User user);
 }

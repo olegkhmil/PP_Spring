@@ -3,10 +3,7 @@ package spr.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import spr.model.User;
 import spr.service.UserService;
 
@@ -74,14 +71,8 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@RequestParam("id") Long id,
-                             @RequestParam("name") String name,
-                             @RequestParam("age") int age,
-                             @RequestParam("email") String email,
-                             @RequestParam("password") String password,
-                             @RequestParam("role") String role, Model model) {//@ModelAttribute @Valid  User user
-
-        if (userService.updateUser(id, name, age, email, password, role)) {
+    public String updateUser(@ModelAttribute("user") User user, Model model) {// @Valid  User user
+        if (userService.updateUser(user)) {
             return "redirect:/allUsers";
         } else {
             model.addAttribute("result", "DB ERROR or email already exists");
@@ -95,12 +86,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String addUser(@RequestParam("name") String name,
-                          @RequestParam("age") int age,
-                          @RequestParam("email") String email,
-                          @RequestParam("password") String password,
-                          @RequestParam("role") String role, Model model) {
-        if (userService.addUser(name, age, email, password, role)) {
+    public String addUser(@ModelAttribute("user") User user, Model model) {
+        if (userService.addUser(user)) {
             return "redirect:/allUsers";
         } else {
             model.addAttribute("result", "DB ERROR or email already exists");

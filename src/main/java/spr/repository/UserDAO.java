@@ -9,6 +9,8 @@ public interface UserDAO {
 
     boolean addUser(String name, int age, String email, String password, String role);
 
+    boolean addUser(User user);
+
     boolean updateUser(User user);
 
     boolean deleteUser(User user);

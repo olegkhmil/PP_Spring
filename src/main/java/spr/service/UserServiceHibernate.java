@@ -7,8 +7,6 @@ import spr.repository.UserDAO;
 
 import spr.model.User;
 
-import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import java.util.List;
 
 @Service
@@ -39,20 +37,22 @@ public class UserServiceHibernate implements UserService {
 
     @Override
     public boolean addUser(String name, int age, String email, String password, String role) {
-        try {
-            if (getUserByEmail(email) == null) {
-                return userDAO.addUser(name, age, email, password, role);
-            } else {
-                return false;
-            }
-        } catch (NonUniqueResultException e) {
-            return false;
-        }
+        return userDAO.addUser(name, age, email, password, role);
+    }
+
+    @Override
+    public boolean addUser(User user) {
+        return userDAO.addUser(user);
     }
 
     @Override
     public boolean deleteUser(Long id) {
         return userDAO.deleteUserById(id);
+    }
+
+    @Override
+    public boolean updateUser(User user) {
+        return userDAO.updateUser(user);
     }
 
     @Override

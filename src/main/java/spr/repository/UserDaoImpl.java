@@ -30,6 +30,18 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
+    public boolean addUser(User user) {
+        try {
+            User user1 = getUserByEmail(user.getEmail());
+            if (user1 == null)
+                entityManager.persist(user);
+            return true;
+        } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
+            return false;
+        }
+    }
+
+    @Override
     public boolean updateUser(User user) {
         try {
             entityManager.merge(user);
