@@ -17,27 +17,39 @@ public class UserDaoImpl implements UserDAO {
         entityManager.persist(user);
     }
 
+//    @Override
+//    public boolean addUser(String name, int age, String email, String password, String role) {
+//        try {
+//            User user = getUserByEmail(email);
+//            if (user == null)
+//                entityManager.persist(new User(name, age, email, password, role));
+//            return true;
+//        } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
+//            return false;
+//        }
+//    }
+
     @Override
-    public boolean addUser(String name, int age, String email, String password, String role) {
+    public boolean addUser(User user) {
         try {
-            User user = getUserByEmail(email);
-            if (user == null)
-                entityManager.persist(new User(name, age, email, password, role));
-            return true;
+            User user1 = getUserByName(user.getName());
+            if (user1 == null) {
+                entityManager.persist(user);
+                return true;
+            }else return false;
         } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
             return false;
         }
     }
 
     @Override
-    public boolean addUser(User user) {
+    public User getUserByName(String name) {
         try {
-            User user1 = getUserByEmail(user.getEmail());
-            if (user1 == null)
-                entityManager.persist(user);
-            return true;
-        } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
-            return false;
+            return entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name", User.class)
+                    .setParameter("name", name)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 
@@ -56,9 +68,7 @@ public class UserDaoImpl implements UserDAO {
         try {
             entityManager.remove(user);
             return true;
-        } catch (TransactionRequiredException e) {
-            return false;
-        } catch (IllegalArgumentException e) {
+        } catch (TransactionRequiredException | IllegalArgumentException e) {
             return false;
         }
     }
@@ -89,11 +99,11 @@ public class UserDaoImpl implements UserDAO {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String email, String password) {
+    public User getUserByNameAndPassword(String name, String password) {
         User user;
         try {
-            user = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email AND u.password = :password", User.class)
-                    .setParameter("email", email)
+            user = entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name AND u.password = :password", User.class)
+                    .setParameter("name", name)
                     .setParameter("password", password)
                     .getSingleResult();
         } catch (NoResultException ex) {

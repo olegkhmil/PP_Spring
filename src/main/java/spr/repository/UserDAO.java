@@ -7,7 +7,7 @@ import java.util.List;
 public interface UserDAO {
     void saveUser(User user);
 
-    boolean addUser(String name, int age, String email, String password, String role);
+//    boolean addUser(String name, int age, String email, String password, String role);
 
     boolean addUser(User user);
 
@@ -20,8 +20,9 @@ public interface UserDAO {
     User getUserById(Long id);
 
     User getUserByEmail(String email);
+    User getUserByName(String name);
 
-    User getUserByEmailAndPassword(String username, String password);
+    User getUserByNameAndPassword(String name, String password);
 
     List<User> getAllUsers();
 

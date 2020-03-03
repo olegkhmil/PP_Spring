@@ -1,6 +1,7 @@
 package spr.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spr.repository.UserDAO;
@@ -11,12 +12,13 @@ import java.util.List;
 
 @Service
 @Transactional
-public class UserServiceHibernate implements UserService {
+public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceHibernate(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
     }
 
@@ -34,14 +36,13 @@ public class UserServiceHibernate implements UserService {
     public User getUserByEmail(String email) {
         return userDAO.getUserByEmail(email);
     }
-
-    @Override
-    public boolean addUser(String name, int age, String email, String password, String role) {
-        return userDAO.addUser(name, age, email, password, role);
+    public User getUserByName(String name) {
+        return userDAO.getUserByName(name);
     }
 
     @Override
     public boolean addUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDAO.addUser(user);
     }
 
@@ -52,22 +53,9 @@ public class UserServiceHibernate implements UserService {
 
     @Override
     public boolean updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDAO.updateUser(user);
     }
 
-    @Override
-    public boolean updateUser(Long id, String name, int age, String email, String password, String role) {
-        User user = userDAO.getUserById(id);
-        if (user != null &&
-                (userDAO.getUserByEmail(email) == null || userDAO.getUserByEmail(email).getId().equals(id))) {
-            user.setName(name);
-            user.setAge(age);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setRole(role);
-            userDAO.updateUser(user);
-            return true;
-        } else return false;
-    }
 
 }

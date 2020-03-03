@@ -1,8 +1,10 @@
 package spr.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
+import spr.config.root.EntityManagerConfig;
+import spr.config.web.WebConfig;
 
-public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {

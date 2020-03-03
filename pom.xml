@@ -12,7 +12,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.1</version>
+                <version>3.1</version>
                 <configuration>
                     <source>13</source>
                     <target>13</target>
@@ -25,8 +25,10 @@
 
     <properties>
         <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
+        <org.springframework.security>5.2.2.RELEASE</org.springframework.security>
         <hibernate.version>5.4.5.Final</hibernate.version>
         <mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
@@ -69,6 +71,34 @@
             <artifactId>spring-jdbc</artifactId>
             <version>${org.springframework.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${org.springframework.security}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${org.springframework.security}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <version>${org.springframework.security}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-crypto</artifactId>
+            <version>${org.springframework.security}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-cas</artifactId>
+            <version>${org.springframework.security}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -80,6 +110,13 @@
             <artifactId>hibernate-entitymanager</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.validator/hibernate-validator -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>6.1.0.Final</version>
+        </dependency>
+
 
         <dependency>
             <groupId>mysql</groupId>
