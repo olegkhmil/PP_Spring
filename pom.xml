@@ -21,7 +21,7 @@
         </plugins>
     </build>
     <packaging>war</packaging>
-    <name>SpringMVC+Hibernate</name>
+    <name>Spring1</name>
 
     <properties>
         <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
@@ -117,6 +117,14 @@
             <version>8.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha1</version>
+        </dependency>
+
+
     </dependencies>
 
 
