@@ -11,6 +11,8 @@
 
     <p>
         <h1>Hello ${user.name}</h1>
+        <h3>your age ${user.age}</h3>
+        <h3>your email ${user.email}</h3>
     </p>
 </body>
 </html>

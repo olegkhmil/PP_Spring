@@ -1,10 +1,13 @@
 package spr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import spr.security.details.UserDetailsImpl;
+import spr.security.transfer.UserDTO;
 import spr.service.UserService;
 
 @Controller
@@ -18,11 +21,13 @@ public class UserController {
     }
 
     @GetMapping
-    public ModelAndView userPage() {
-        ModelAndView model = new ModelAndView();
-        model.addObject("user", "Spring Security Tutorial");
-        model.addObject("message", "Welcome Page !");
-        model.setViewName("userPage");
-        return model;
+    public String userPage(Authentication authentication, Model model) {
+        if(authentication == null){
+            return "redirect:/login";
+        }
+        UserDetailsImpl details = (UserDetailsImpl)authentication.getPrincipal();
+        UserDTO userDTO = new UserDTO();
+        model.addAttribute("user", userDTO.getUser(details.getUser()));
+        return "userPage";
     }
 }

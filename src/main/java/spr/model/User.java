@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -26,8 +27,9 @@ public class User {
     private String email;
     @Column(name = "hash_password")
     private String hash_password;
+    @Transient
     private String password;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -40,21 +42,22 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name, int age, String email, String password) {
+    public User(Long id, String name, int age, String email, String hash_password) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
-        this.password = password;
+        this.hash_password = hash_password;
     }
 
-    public User(String name, int age, String email, String password) {
+    public User(String name, int age, String email, String hash_password, Set<Role> roles, State state) {
         this.name = name;
         this.age = age;
         this.email = email;
-        this.password = password;
+        this.hash_password = hash_password;
+        this.roles = roles;
+        this.state = state;
     }
-
 
     public Long getId() {
         return id;
@@ -96,14 +99,6 @@ public class User {
         this.password = password;
     }
 
-    public String getHash_password() {
-        return hash_password;
-    }
-
-    public void setHash_password(String hash_password) {
-        this.hash_password = hash_password;
-    }
-
     public State getState() {
         return state;
     }
@@ -112,8 +107,18 @@ public class User {
         this.state = state;
     }
 
+    public String getHash_password() {
+        return hash_password;
+    }
+
+    public void setHash_password(String hash_password) {
+        this.hash_password = hash_password;
+    }
+
     public Set<Role> getRoles() {
+        if(roles != null)
         return roles;
+        return new HashSet<>();
     }
 
     public void setRoles(Set<Role> roles) {

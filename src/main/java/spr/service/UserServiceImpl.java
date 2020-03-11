@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import spr.model.Role;
 import spr.repository.UserDAO;
 
 import spr.model.User;
@@ -20,6 +21,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserDAO userDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -36,13 +38,15 @@ public class UserServiceImpl implements UserService {
     public User getUserByEmail(String email) {
         return userDAO.getUserByEmail(email);
     }
+
+    @Override
     public User getUserByName(String name) {
         return userDAO.getUserByName(name);
     }
 
     @Override
     public boolean addUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setHash_password(passwordEncoder.encode(user.getHash_password()));
         return userDAO.addUser(user);
     }
 
@@ -53,9 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userDAO.updateUser(user);
     }
-
 
 }

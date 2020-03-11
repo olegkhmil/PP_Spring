@@ -21,7 +21,7 @@
         </plugins>
     </build>
     <packaging>war</packaging>
-    <name>SpringMVC+Hibernate</name>
+    <name>Spring1</name>
 
     <properties>
         <org.springframework.version>5.2.3.RELEASE</org.springframework.version>
@@ -98,7 +98,12 @@
             <artifactId>spring-security-cas</artifactId>
             <version>${org.springframework.security}</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-taglibs</artifactId>
+            <version>${org.springframework.security}</version>
+            <scope>runtime</scope>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -134,6 +139,11 @@
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/javax.servlet.jsp/jsp-api -->
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
@@ -154,6 +164,20 @@
             <version>8.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.0-alpha1</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.10.2</version>
+        </dependency>
+
+
     </dependencies>
 
 

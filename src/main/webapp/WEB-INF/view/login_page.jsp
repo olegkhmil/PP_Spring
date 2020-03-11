@@ -7,11 +7,11 @@
 </head>
 <body>
 
-<form action="${pageContext.servletContext.contextPath}/" method="post">
+<form action="${pageContext.servletContext.contextPath}/login" method="post">
     <p align="center">
     <h1 align="center">Message: ${message}</h1>
-        Email: <input type="text" name="emailIndex"/><br/>
-        Password: <input type="password" name="passwordIndex"/><br/>
+        Login: <input type="text" name="usernameForm"/><br/>
+        Password: <input type="password" name="passwordForm"/><br/>
         <input type="submit" value="Submit"/>
     </p>
 </form>

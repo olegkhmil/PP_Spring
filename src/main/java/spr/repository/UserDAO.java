@@ -1,13 +1,14 @@
 package spr.repository;
 
+import spr.model.Role;
+import spr.model.State;
 import spr.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface UserDAO {
     void saveUser(User user);
-
-//    boolean addUser(String name, int age, String email, String password, String role);
 
     boolean addUser(User user);
 
@@ -20,9 +21,8 @@ public interface UserDAO {
     User getUserById(Long id);
 
     User getUserByEmail(String email);
-    User getUserByName(String name);
 
-    User getUserByNameAndPassword(String name, String password);
+    User getUserByName(String name);
 
     List<User> getAllUsers();
 

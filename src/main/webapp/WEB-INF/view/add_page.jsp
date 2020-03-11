@@ -9,20 +9,20 @@
 <table style=" width: 100%; border: 4px double black;">
     <tr>
         <td style="border: 1px solid black; text-align: center">
-            <a href="${pageContext.servletContext.contextPath}/allUsers">All users</a>
+            <a href="${pageContext.servletContext.contextPath}/admin/all">All users</a>
         </td>
     </tr>
 </table>
-<form action="${pageContext.servletContext.contextPath}/add" method="post">
+<form action="${pageContext.servletContext.contextPath}/admin/add" method="post">
     <p align="center">
         Name: <input type="text" name="name"/><br/>
         Age: <input type="number" name="age"/><br/>
         Email: <input type="text" name="email"/><br/>
         Password: <input type="password" name="password"><br/>
-        Role: <select  name="role" id = "role">
-        <option value="admin">admin</option>
-        <option value="user">user</option>
-        </select>
+        Role: <select name="role_name" id="role_name">
+        <option value="USER">user</option>
+        <option value="ADMIN">admin</option>
+    </select>
         <input type="submit" value="Submit"/>
     </p>
 </form>

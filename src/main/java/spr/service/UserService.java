@@ -3,19 +3,21 @@ package spr.service;
 import spr.model.User;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    public List<User> getAllUsers();
+    List<User> getAllUsers();
 
-    public User getUserById(Long id);
+    User getUserById(Long id);
 
-    public User getUserByEmail(String email);
-    public User getUserByName(String name);
+    User getUserByEmail(String email);
+
+    User getUserByName(String name);
 
     boolean addUser(User user);
 
-    public boolean deleteUser(Long id);
+    boolean deleteUser(Long id);
 
-    public boolean updateUser(User user);
+    boolean updateUser(User user);
 }

@@ -9,21 +9,25 @@
 <table style=" width: 100%; border: 4px double black;">
     <tr>
         <td style="border: 1px solid black; text-align: center">
-            <a href="${pageContext.servletContext.contextPath}/allUsers">All users</a>
+            <a href="${pageContext.servletContext.contextPath}/admin/all">All users</a>
         </td>
     </tr>
 </table>
-<form action="${pageContext.servletContext.contextPath}/update" method="post">
+<form action="${pageContext.servletContext.contextPath}/admin/update" method="post">
     <input type="hidden" name="id" value="${userFromDB.id}">
+    <input type="hidden" name="roles" value="${userFromDB.roles}">
+    <input type="hidden" name="oldPass" value="${userFromDB.hash_password}">
+
     <p align="center">
         Name: <input type="text" name="name" value="${userFromDB.name}"/><br/>
         Age: <input type="number" name="age" value="${userFromDB.age}"/><br/>
         Email: <input type="text" name="email" value="${userFromDB.email}"/><br/>
-        Password: <input type="password" name="password" value="${userFromDB.password}"><br/>
-        Role: <select name="role" id="role">
-        <option value="${userFromDB.role}">${userFromDB.role}</option>
-        <option value="user">user</option>
-        <option value="admin">admin</option>
+        Password: <input type="password" name="hash_password" value="${userFromDB.hash_password}"><br/>
+        State: <input type="text" name="state" value="${userFromDB.state}"><br/>
+        Role: <select name="role_name" id="role_name">
+
+        <option value="USER">user</option>
+        <option value="ADMIN">admin</option>
     </select>
         <input type="submit" value="Submit"/>
     </p>

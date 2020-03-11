@@ -1,10 +1,16 @@
 package spr.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import spr.model.Role;
+import spr.model.State;
 import spr.model.User;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDAO {
@@ -12,22 +18,14 @@ public class UserDaoImpl implements UserDAO {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public void saveUser(User user) {
         entityManager.persist(user);
     }
 
-//    @Override
-//    public boolean addUser(String name, int age, String email, String password, String role) {
-//        try {
-//            User user = getUserByEmail(email);
-//            if (user == null)
-//                entityManager.persist(new User(name, age, email, password, role));
-//            return true;
-//        } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
-//            return false;
-//        }
-//    }
 
     @Override
     public boolean addUser(User user) {
@@ -36,7 +34,7 @@ public class UserDaoImpl implements UserDAO {
             if (user1 == null) {
                 entityManager.persist(user);
                 return true;
-            }else return false;
+            } else return false;
         } catch (EntityExistsException | IllegalArgumentException | TransactionRequiredException | NonUniqueResultException e) {
             return false;
         }
@@ -98,19 +96,6 @@ public class UserDaoImpl implements UserDAO {
         }
     }
 
-    @Override
-    public User getUserByNameAndPassword(String name, String password) {
-        User user;
-        try {
-            user = entityManager.createQuery("SELECT u FROM User u WHERE u.name = :name AND u.password = :password", User.class)
-                    .setParameter("name", name)
-                    .setParameter("password", password)
-                    .getSingleResult();
-        } catch (NoResultException ex) {
-            return null;
-        }
-        return user;
-    }
 
     @Override
     public List<User> getAllUsers() {

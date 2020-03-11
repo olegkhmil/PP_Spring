@@ -1,4 +1,4 @@
-package spr.config.root;
+package spr.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -76,9 +76,6 @@ public class EntityManagerConfig {
         return properties;
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 
 }

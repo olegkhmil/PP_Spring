@@ -17,8 +17,8 @@
 <table style=" width: 100%; border: 4px double black;">
     <tr>
         <td style="border: 1px solid black; text-align: center">
-            <a href="${pageContext.servletContext.contextPath}/add">Add new user</a>
-<%--            <a style="position: absolute; right: 25px"  href="${pageContext.servletContext.contextPath}/logout">Logout</a>--%>
+            <a href="${pageContext.servletContext.contextPath}/admin/add">Add new user</a>
+            <a style="position: absolute; right: 25px"  href="${pageContext.servletContext.contextPath}/logout">Logout</a>
         </td>
 
     </tr>
@@ -33,6 +33,7 @@
         <th>User email</th>
         <th>password</th>
         <th>role</th>
+        <th>state</th>
         <th colspan="2">Action</th>
     </tr>
 
@@ -42,10 +43,15 @@
             <td>${user.name}</td>
             <td>${user.age}</td>
             <td>${user.email}</td>
-            <td>${user.password}</td>
-            <td>${user.role}</td>
+            <td>${user.hash_password}</td>
             <td>
-                <form action="${pageContext.servletContext.contextPath}/delete" method="post">
+        <c:forEach var="role" items="${user.roles}">
+            ${role.role_name}<br>
+        </c:forEach>
+            </td>
+            <td>${user.state}</td>
+            <td>
+                <form action="${pageContext.servletContext.contextPath}/admin/delete" method="post">
                     <label>
                         <input type="text" hidden name="id" value="${user.id}"/>
                     </label>
@@ -53,7 +59,7 @@
                 </form>
             </td>
             <td>
-                <form action="${pageContext.servletContext.contextPath}/update" method="get">
+                <form action="${pageContext.servletContext.contextPath}/admin/update" method="get">
                     <label>
                         <input type="number" hidden name="id" value="${user.id}"/>
                     </label>

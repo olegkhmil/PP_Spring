@@ -10,19 +10,23 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
-    private String name;
+    private String role_name;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private Set<User> users;
 
     public Role() {
+    }
+
+    public Role(String role_name) {
+        this.role_name = role_name;
     }
 
     public Integer getId() {
@@ -33,12 +37,12 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getRole_name() {
+        return role_name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole_name(String name) {
+        this.role_name = name.toUpperCase();
     }
 
     public Set<User> getUsers() {
@@ -54,16 +58,21 @@ public class Role implements GrantedAuthority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(name, role.name);
+        return Objects.equals(role_name, role.role_name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name);
+        return Objects.hash(role_name);
     }
 
     @Override
     public String getAuthority() {
-        return name;
+        return role_name;
+    }
+
+    @Override
+    public String toString() {
+        return role_name;
     }
 }

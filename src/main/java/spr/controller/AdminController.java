@@ -1,25 +1,34 @@
 package spr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import spr.model.Role;
+import spr.model.State;
 import spr.model.User;
+import spr.service.RoleService;
 import spr.service.UserService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AdminController(UserService userService, PasswordEncoder passwordEncoder) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder passwordEncoder) {
         this.userService = userService;
+        this.roleService = roleService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/all")
@@ -73,14 +82,27 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, Model model) {// @Valid  User user
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public String updateUser(@ModelAttribute("user") User user,
+                             @RequestParam("oldPass") String oldPass,
+                             @RequestParam("role_name") String role, Model model) {// @Valid  User user
+        Role role1 = roleService.getRoleByName(role);
+        Set<Role> roleSet = new HashSet<>();
+        roleSet.add(role1);
+        for (Role r : user.getRoles()) {
+            String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
+            roleSet.add(roleService.getRoleByName(s));
+        }
+        user.setRoles(roleSet);
+        if (!oldPass.equals(user.getHash_password())) {
+            user.setHash_password(passwordEncoder.encode(user.getHash_password()));
+        }
         if (userService.updateUser(user)) {
             return "redirect:/admin/all";
         } else {
             model.addAttribute("result", "DB ERROR or email already exists");
             return "result_page";
         }
+
     }
 
     @GetMapping("/add")
@@ -89,7 +111,21 @@ public class AdminController {
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") User user, Model model) {
+    public String addUser(@RequestParam("name") String name,
+                          @RequestParam("age") int age,
+                          @RequestParam("email") String email,
+                          @RequestParam("password") String password,
+                          @ModelAttribute("role") Role role, Model model) {
+        Set<Role> roleSet = new HashSet<>();
+        Role role1 = roleService.getRoleByName(role.getRole_name());
+        if (role1 != null) {
+            roleSet.add(role1);
+        } else {
+            model.addAttribute("result", "DB ERROR or role don't exists");
+            return "result_page";
+        }
+
+        User user = new User(name, age, email, password, roleSet, State.ACTIVE);
         if (userService.addUser(user)) {
             return "redirect:/admin/all";
         } else {
