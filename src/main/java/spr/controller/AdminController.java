@@ -2,6 +2,7 @@ package spr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -85,25 +86,47 @@ public class AdminController {
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("oldPass") String oldPass,
                              @RequestParam("role_name") String role, Model model) {// @Valid  User user
-        Role role1 = roleService.getRoleByName(role);
         Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role1);
-        for (Role r : user.getRoles()) {
-            String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
-            roleSet.add(roleService.getRoleByName(s));
+        Role role1;
+        if (role.contains("DEL") && user.getRoles().size() == 2) {
+            roleSet = new HashSet<>(roleService.getAllRoles());
+            role1 = roleService.getRoleByName(role.substring(4));
+            roleSet.remove(role1);
+            user.setRoles(roleSet);
+        } else if (role.contains("DEL") && user.getRoles().size() < 2) {
+            for (Role r : user.getRoles()) {
+                String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
+                if (s.equals(role.substring(4))) {
+                    roleSet.add(roleService.getRoleByName(s));
+                    user.setState(State.BANNED);
+                    user.setRoles(roleSet);
+                } else {
+                    roleSet.add(roleService.getRoleByName(s));
+                    user.setRoles(roleSet);
+                }
+            }
         }
-        user.setRoles(roleSet);
+        if (!role.contains("DEL")) {
+            roleSet.add(roleService.getRoleByName(role));
+            for (Role r : user.getRoles()) {
+                String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
+                roleSet.add(roleService.getRoleByName(s));
+            }
+            user.setRoles(roleSet);
+        }
+
         if (!oldPass.equals(user.getHash_password())) {
             user.setHash_password(passwordEncoder.encode(user.getHash_password()));
         }
         if (userService.updateUser(user)) {
             return "redirect:/admin/all";
         } else {
-            model.addAttribute("result", "DB ERROR or email already exists");
+            model.addAttribute("result", "DB ERROR or user already exists");
             return "result_page";
         }
 
     }
+
 
     @GetMapping("/add")
     public String addUser() {
@@ -133,5 +156,4 @@ public class AdminController {
             return "result_page";
         }
     }
-
 }

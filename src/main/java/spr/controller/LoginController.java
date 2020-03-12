@@ -17,8 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/login")
 public class LoginController {
-    @Autowired
-    private UserService userService;
 
     @GetMapping
     public String getLoginPage(Authentication authentication, ModelMap model, HttpServletRequest request) {
@@ -31,9 +29,6 @@ public class LoginController {
                 } else return "login_page";
             }
         }
-//        if (request.getParameterMap().containsKey("error")) {
-//            model.addAttribute("error", true);
-//        }
         return "login_page";
     }
 

@@ -12,8 +12,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
-    //
-//    private static final long serialVersionUID = -2560141032965688812L;
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

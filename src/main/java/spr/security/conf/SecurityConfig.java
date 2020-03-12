@@ -4,17 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import spr.handler.LoginSuccessHandler;
+import spr.security.handler.LoginSuccessHandler;
 
 @Configuration
 @ComponentScan("spr")
@@ -28,16 +25,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/user/**").permitAll()// не получается hasAnyAuthority
+                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
                 .antMatchers("/login").anonymous()
-//                .anyRequest().permitAll()
                 .and().formLogin()
                 .loginPage("/login")
-                .successHandler(new LoginSuccessHandler())
                 .loginProcessingUrl("/login")
                 .usernameParameter("usernameForm")
                 .passwordParameter("passwordForm")
-//                .defaultSuccessUrl("/user")
+                .successHandler(new LoginSuccessHandler())
                 .permitAll();
 
         http.logout()
