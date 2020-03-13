@@ -19,10 +19,9 @@
         Age: <input type="number" name="age"/><br/>
         Email: <input type="text" name="email"/><br/>
         Password: <input type="password" name="password"><br/>
-        Role: <select name="role_name" id="role_name">
-        <option value="USER">user</option>
-        <option value="ADMIN">admin</option>
-    </select>
+        Role:
+        <input type="checkbox" name="option1" value="ADMIN" >ADMIN<Br>
+        <input type="checkbox" name="option1" value="USER" >USER<Br>
         <input type="submit" value="Submit"/>
     </p>
 </form>

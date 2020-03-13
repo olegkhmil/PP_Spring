@@ -71,6 +71,7 @@ public class AdminController {
             User userFromDB = userService.getUserById(id);
             if (userFromDB != null) {
                 model.addAttribute("userFromDB", userFromDB);
+                model.addAttribute("rolesFromDB",roleService.getAllRoles());
                 return "update_page";
             } else {
                 model.addAttribute("result", "DB ERROR");
@@ -85,39 +86,19 @@ public class AdminController {
     @PostMapping("/update")
     public String updateUser(@ModelAttribute("user") User user,
                              @RequestParam("oldPass") String oldPass,
-                             @RequestParam("role_name") String role, Model model) {// @Valid  User user
+                             @RequestParam("newPass") String newPass,
+                             @RequestParam("option1") String r1,
+                             Model model) {
         Set<Role> roleSet = new HashSet<>();
-        Role role1;
-        if (role.contains("DEL") && user.getRoles().size() == 2) {
-            roleSet = new HashSet<>(roleService.getAllRoles());
-            role1 = roleService.getRoleByName(role.substring(4));
-            roleSet.remove(role1);
-            user.setRoles(roleSet);
-        } else if (role.contains("DEL") && user.getRoles().size() < 2) {
-            for (Role r : user.getRoles()) {
-                String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
-                if (s.equals(role.substring(4))) {
-                    roleSet.add(roleService.getRoleByName(s));
-                    user.setState(State.BANNED);
-                    user.setRoles(roleSet);
-                } else {
-                    roleSet.add(roleService.getRoleByName(s));
-                    user.setRoles(roleSet);
-                }
-            }
+        String[] roles = r1.split(",");
+        for (String s : roles) {
+            roleSet.add(roleService.getRoleByName(s));
         }
-        if (!role.contains("DEL")) {
-            roleSet.add(roleService.getRoleByName(role));
-            for (Role r : user.getRoles()) {
-                String s = r.getRole_name().contains("ADMIN") ? "ADMIN" : "USER";
-                roleSet.add(roleService.getRoleByName(s));
-            }
-            user.setRoles(roleSet);
-        }
+        user.setRoles(roleSet);
+        if (newPass.equals("")) {
+            user.setHash_password(oldPass);
+        } else user.setHash_password(passwordEncoder.encode(newPass));
 
-        if (!oldPass.equals(user.getHash_password())) {
-            user.setHash_password(passwordEncoder.encode(user.getHash_password()));
-        }
         if (userService.updateUser(user)) {
             return "redirect:/admin/all";
         } else {
@@ -138,14 +119,13 @@ public class AdminController {
                           @RequestParam("age") int age,
                           @RequestParam("email") String email,
                           @RequestParam("password") String password,
-                          @ModelAttribute("role") Role role, Model model) {
+                          @RequestParam("option1") String r1,
+                          Model model) {
+
+        String[] roles = r1.split(",");
         Set<Role> roleSet = new HashSet<>();
-        Role role1 = roleService.getRoleByName(role.getRole_name());
-        if (role1 != null) {
-            roleSet.add(role1);
-        } else {
-            model.addAttribute("result", "DB ERROR or role don't exists");
-            return "result_page";
+        for (String s : roles) {
+            roleSet.add(roleService.getRoleByName(s));
         }
 
         User user = new User(name, age, email, password, roleSet, State.ACTIVE);
