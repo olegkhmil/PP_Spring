@@ -4,10 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import spr.model.Role;
-import spr.repository.UserDAO;
-
 import spr.model.User;
+import spr.repository.UserDAO;
 
 import java.util.List;
 

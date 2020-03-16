@@ -1,25 +1,16 @@
 package spr.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
-import spr.model.Role;
-import spr.model.State;
 import spr.model.User;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public class UserDaoImpl implements UserDAO {
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public void saveUser(User user) {

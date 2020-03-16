@@ -22,7 +22,6 @@
         Age: <input type="number" name="age" value="${userFromDB.age}"/><br/>
         Email: <input type="text" name="email" value="${userFromDB.email}"/><br/>
         Password: <input type="password" name="newPass" value=""><br/>
-        <%--        State: <input type="text" name="state" value="${userFromDB.state}"><br/>--%>
         State: <select name="state" id="state">
         <option value="${userFromDB.state}">"${userFromDB.state}"</option>
         <option value="DELETED">DELETED</option>

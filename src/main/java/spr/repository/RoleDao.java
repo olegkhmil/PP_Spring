@@ -1,7 +1,6 @@
 package spr.repository;
 
 import spr.model.Role;
-import spr.model.User;
 
 import java.util.List;
 
@@ -11,6 +10,7 @@ public interface RoleDao {
     boolean updateRole(Role role);
 
     boolean deleteRole(Role role);
+
     boolean deleteRoleByID(Integer id);
 
     Role getRoleById(Integer id);

@@ -1,25 +1,17 @@
 package spr.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import spr.model.Role;
-import spr.service.UserService;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController {
 
     @GetMapping
-    public String getLoginPage(Authentication authentication, ModelMap model, HttpServletRequest request) {
+    public String getLoginPage(Authentication authentication) {
         if (authentication != null) {
             for (GrantedAuthority r : authentication.getAuthorities()) {
                 if (r.getAuthority().equalsIgnoreCase("admin")) {

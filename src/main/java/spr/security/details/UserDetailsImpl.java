@@ -1,13 +1,12 @@
 package spr.security.details;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import spr.model.Role;
 import spr.model.State;
 import spr.model.User;
 
 import java.util.Collection;
-import java.util.Set;
 
 public class UserDetailsImpl implements UserDetails {
 
@@ -23,12 +22,7 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Role> roleSet = user.getRoles();
-        for(Role r:roleSet){
-            System.out.println(r.getRole_name());
-            System.out.println(r.getAuthority());
-        }
-        return roleSet;
+        return user.getRoles();
     }
 
     @Override

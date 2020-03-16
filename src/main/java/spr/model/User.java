@@ -1,11 +1,6 @@
 package spr.model;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,7 +29,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
-    @Column(name="state")
+    @Column(name = "state")
     @Enumerated(value = EnumType.STRING)
     private State state;
 
@@ -115,8 +110,8 @@ public class User {
     }
 
     public Set<Role> getRoles() {
-        if(roles != null)
-        return roles;
+        if (roles != null)
+            return roles;
         return new HashSet<>();
     }
 

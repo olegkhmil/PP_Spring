@@ -7,11 +7,18 @@ import spr.model.Role;
 import spr.repository.RoleDao;
 
 import java.util.List;
+
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
-    @Autowired
+
     private RoleDao roleDao;
+
+    @Autowired
+    public RoleServiceImpl(RoleDao roleDao) {
+        this.roleDao = roleDao;
+    }
+
     @Override
     public List<Role> getAllRoles() {
         return roleDao.getAllRoles();

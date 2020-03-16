@@ -12,14 +12,18 @@ import spr.repository.UserDAO;
 @Service
 @Transactional
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
     private UserDAO userDAO;
+
+    @Autowired
+    public UserDetailsServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userDAO.getUserByName(username);
         if (user != null) {
             return new UserDetailsImpl(user);
-        }else throw new UsernameNotFoundException("User:" + username + " not found");
+        } else throw new UsernameNotFoundException("User:" + username + " not found");
     }
 }

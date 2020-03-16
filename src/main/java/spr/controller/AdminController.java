@@ -1,8 +1,6 @@
 package spr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -71,7 +69,7 @@ public class AdminController {
             User userFromDB = userService.getUserById(id);
             if (userFromDB != null) {
                 model.addAttribute("userFromDB", userFromDB);
-                model.addAttribute("rolesFromDB",roleService.getAllRoles());
+                model.addAttribute("rolesFromDB", roleService.getAllRoles());
                 return "update_page";
             } else {
                 model.addAttribute("result", "DB ERROR");
