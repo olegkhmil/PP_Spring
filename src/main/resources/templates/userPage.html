@@ -1,0 +1,14 @@
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>user page</title>
+</head>
+<body>
+
+<a style="position: absolute; right: 25px" href="/logout">Logout</a>
+
+    <h1 th:text="Hello+ ' ' + ${user.name}"></h1>
+
+</body>
+</html>

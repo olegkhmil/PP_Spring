@@ -1,7 +1,7 @@
 package spr.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
+import java.util.*;
 import java.util.Set;
 
 @Entity
@@ -27,7 +27,7 @@ public class User {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private java.util.Set<Role> roles;
 
     @Column(name = "state")
     @Enumerated(value = EnumType.STRING)
@@ -44,7 +44,7 @@ public class User {
         this.hash_password = hash_password;
     }
 
-    public User(String name, int age, String email, String hash_password, Set<Role> roles, State state) {
+    public User(String name, int age, String email, String hash_password, java.util.Set<Role> roles, State state) {
         this.name = name;
         this.age = age;
         this.email = email;

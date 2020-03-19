@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Update user</title>
+</head>
+<body>
+<table style=" width: 100%; border: 4px double black;">
+    <tr>
+        <td style="border: 1px solid black; text-align: center">
+            <a href="/admin/all">All users</a>
+        </td>
+    </tr>
+</table>
+<form action="/admin/update" method="post">
+    <input type="hidden" name="id" th:value="${userFromDB.id}">
+    <input type="hidden" name="oldPass" th:value="${userFromDB.hash_password}">
+
+    <p align="center">
+        Name: <input type="text" name="name" th:value="${userFromDB.name}"/><br/>
+        Age: <input type="number" name="age" th:value="${userFromDB.age}"/><br/>
+        Email: <input type="text" name="email" th:value="${userFromDB.email}"/><br/>
+        Password: <input type="password" name="newPass" value=""><br/>
+        State: <select name="state" id="state">
+        <option th:value="${userFromDB.state}"><i th:text="${userFromDB.state}"></i></option>
+        <option value="DELETED">DELETED</option>
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="BANNED">BANNED</option>
+    </select><br/>
+        Role:
+        <th:block th:each="role:${rolesFromDB}">
+            <input type="checkbox" name="option1" th:value="${role.id}"
+                   th:checked="${userFromDB.roles.contains(role)}">
+            <span th:text="${role.role_name}"></span><br>
+        </th:block>
+        <input type="submit" value="Отправить">
+    </p>
+</form>
+</body>
+</html>

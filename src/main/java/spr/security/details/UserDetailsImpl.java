@@ -1,14 +1,10 @@
 package spr.security.details;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import spr.model.State;
 import spr.model.User;
 
-import java.util.Collection;
-
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements org.springframework.security.core.userdetails.UserDetails {
 
     private User user;
 
@@ -21,7 +17,7 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public java.util.Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles();
     }
 

@@ -2,18 +2,14 @@ package spr.service;
 
 import spr.model.Role;
 
-import java.util.List;
-
 public interface RoleService {
-    List<Role> getAllRoles();
+    java.util.List<Role> getAllRoles();
 
     Role getRoleById(Integer id);
 
-    Role getRoleByName(String name);
+    Role addRole(Role role);
 
-    boolean addRole(Role role);
-
-    boolean deleteRole(Integer id);
+    void deleteRole(Integer id);
 
     boolean updateRole(Role role);
 }

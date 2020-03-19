@@ -1,9 +1,11 @@
 package spr.model;
 
+//import org.springframework.security.core.GrantedAuthority;
+
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 import java.util.Set;
 
 @Entity
@@ -20,7 +22,7 @@ public class Role implements GrantedAuthority {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private Set<User> users;
+    private java.util.Set<User> users;
 
     public Role() {
     }
@@ -45,7 +47,7 @@ public class Role implements GrantedAuthority {
         this.role_name = name.toUpperCase();
     }
 
-    public Set<User> getUsers() {
+    public java.util.Set<User> getUsers() {
         return users;
     }
 
