@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset=UTF-8">
-    <title>Add user</title>
+    <title>Login page</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
@@ -13,24 +13,15 @@
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 </head>
 <body>
-<table style=" width: 100%; border: 4px double black;">
-    <tr>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/admin/all">All users</a>
-        </td>
-    </tr>
-</table>
-<form action="/admin/add" method="post">
+
+<form action="/login" method="post">
     <p align="center">
-        Name: <input type="text" name="name"/><br/>
-        Age: <input type="number" name="age"/><br/>
-        Email: <input type="text" name="email"/><br/>
-        Password: <input type="password" name="password"><br/>
-        Role:
-        <input type="checkbox" name="option1" value="1" >ADMIN<Br>
-        <input type="checkbox" name="option1" value="2" >USER<Br>
+    <h1 align="center" th:text="${message}"></h1>
+        Login: <input type="text" name="usernameForm"/><br/>
+        Password: <input type="password" name="passwordForm"/><br/>
         <input type="submit" value="Submit"/>
     </p>
 </form>
+
 </body>
 </html>

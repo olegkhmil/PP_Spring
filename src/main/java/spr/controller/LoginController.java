@@ -20,12 +20,12 @@ public class LoginController {
                     return "redirect:/user";
                 } else {
                     model.addAttribute("message", "Please login");
-                    return "login_page";
+                    return "Index";
                 }
             }
         }
         model.addAttribute("message", "Please login");
-        return "login_page";
+        return "Index";
     }
 
 }
