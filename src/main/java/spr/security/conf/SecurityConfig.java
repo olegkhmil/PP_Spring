@@ -1,5 +1,6 @@
 package spr.security.conf;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    @org.springframework.context.annotation.Bean
+    @Bean
     public org.springframework.security.crypto.password.PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
