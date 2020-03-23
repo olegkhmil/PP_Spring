@@ -1,64 +1,171 @@
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>AllUsers</title>
+    <title>All Users</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-<table style=" width: 100%; border: 4px double black;">
-    <tr>
-        <td style="border: 1px solid black; text-align: center">
-            <a href="/admin/add">Add new user</a>
-            <a style="position: absolute; right: 25px" href="/logout">Logout</a>
-        </td>
+<nav class="navbar navbar-dark bg-dark flex-md p-2 ">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="/">Project_9</a>
+    <ul class="navbar-nav px-3">
+        <a class="nav-link" href="/logout">Logout</a>
+    </ul>
+</nav>
+<div class="row no-gutters">
+    <div class="col-sm-2 list-group py-3 bg-light">
+        <a href="/admin/all"
+           class="list-group-item list-group-item-action rounded-0 border-0 active">
+            Admin</a>
+        <a href="/user"
+           class="list-group-item list-group-item-action rounded-0 border-0 bg-light text-primary">User</a>
+    </div>
+    <div class="col-10">
+        <div class="card col-sm-12 col-block rounded-0 px-4 py-1 border-0" style="background-color: #DAE0E5">
+            <h3 class="card-header border-0 px-0" style="background-color: #DAE0E5">Admin panel</h3>
 
-    </tr>
-</table>
+            <div class="card col-sm-12 px-0 border-0">
+                <div class="card-header px-0 py-0 border-0" style="background-color: #DAE0E5">
+                    <nav>
+                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                            <!--                        <li class="nav-item border-0">-->
+                            <!--                            <a class="nav-link active border-0" href="/admin/all" data-toggle="tab">Users table</a>-->
+                            <!--                        </li>-->
+                            <!--                        <li class="nav-item">-->
+                            <!--                            <a class="nav-link" href="/admin/add" data-toggle="tab">New user</a>-->
+                            <!--                        </li>-->
+                            <a class="nav-item nav-link active" id="nav-UsersTable-tab" data-toggle="tab"
+                               href="#nav-UsersTable" role="tab" aria-controls="nav-UsersTable" aria-selected="true">Users
+                                table</a>
+                            <a class="nav-item nav-link" id="nav-newUser-tab" data-toggle="tab" href="#nav-newUser"
+                               role="tab" aria-controls="nav-newUser" aria-selected="false">New user</a>
+                        </div>
+                    </nav>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-UsersTable" role="tabpanel"
+                             aria-labelledby="nav-UsersTable-tab">
+                            <div class="card-body px-0 py-0 rounded-0 border-0">
+                                <h5 class="card-header border-left border-right border-bottom-0 rounded-0"
+                                    style="background-color: #EEEEEE">All
+                                    users</h5>
+                                <div class="table table-sm table-responsive-sm border-left border-right py-0"
+                                     style="background-color: white">
+                                    <div class="container py-0">
+                                        <table class="table py-0">
+                                            <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Name</th>
+                                                <th>Age</th>
+                                                <th>email</th>
+                                                <th>password</th>
+                                                <th>role</th>
+                                                <th>state</th>
+                                                <th colspan="2" class="text-center">Action</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <th:block th:each="user:${usersFromDB}">
+                                                <tr>
+                                                    <td th:text="${user.id}">Id</td>
+                                                    <td th:text="${user.name}">Name</td>
+                                                    <td th:text="${user.age}">Age</td>
+                                                    <td th:text="${user.email}">email</td>
+                                                    <td th:text="${user.hash_password}">password</td>
+                                                    <td>
+                                                        <th:block th:each="role:${user.roles}">
+                                                            <i th:text="${role.role_name}">role</i><br>
+                                                        </th:block>
+                                                    </td>
 
-<p align="center">All Users</p>
-<table align="center" border="1px">
-    <tr>
-        <th>User Id</th>
-        <th>User Name</th>
-        <th>User Age</th>
-        <th>User email</th>
-        <th>password</th>
-        <th>role</th>
-        <th>state</th>
-        <th colspan="2">Action</th>
-    </tr>
+                                                    <td th:text="${user.state}">state</td>
+                                                    <td>
+                                                        <form action="/admin/delete" method="post">
+                                                            <label>
+                                                                <input type="text" hidden name="id"
+                                                                       th:value="${user.id}"/>
+                                                            </label>
+                                                            <input type="submit" value="Delete"/>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="/admin/update" method="get">
+                                                            <label>
+                                                                <input type="number" hidden name="id"
+                                                                       th:value="${user.id}"/>
+                                                            </label>
+                                                            <input type="submit" value="Update"/>
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                            </th:block>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-newUser" role="tabpanel" aria-labelledby="nav-newUser-tab">
 
-    <th:block th:each="user:${usersFromDB}">
-        <tr>
-            <td th:text="${user.id}">User Id</td>
-            <td th:text="${user.name}">User Name</td>
-            <td th:text="${user.age}">User Age</td>
-            <td th:text="${user.email}">User email</td>
-            <td th:text="${user.hash_password}">password</td>
-            <td>
-                <th:block th:each="role:${user.roles}">
-                    <i th:text="${role.role_name}"></i><br>
-                </th:block>
-            </td>
+                            <div class="card-body px-0 py-0 rounded-0">
+                                <h5 class="card-header border-0 rounded-0" style="background-color: #EEEEEE">New
+                                    user</h5>
+                                <div class="container bg-white">
+                                    <form action="/admin/add" method="post">
+                                        <div class="form-group py-2">
+                                            <label for="exampleInputEmail1"><b>Email</b></label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputEmail1"><b>Email</b></label>
+                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="exampleInputPassword1">Password</label>
+                                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                        </div>
+                                        <div class="form-group form-check">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </form>
+                                </div>
+                                <!--                                <form action="/admin/add" method="post">-->
+                                <!--                                    <p align="center">-->
+                                <!--                                        Name: <input type="text" name="name"/><br/>-->
+                                <!--                                        Age: <input type="number" name="age"/><br/>-->
+                                <!--                                        Email: <input type="text" name="email"/><br/>-->
+                                <!--                                        Password: <input type="password" name="password"><br/>-->
+                                <!--                                        Role:-->
+                                <!--                                        <input type="checkbox" name="option1" value="1">ADMIN<Br>-->
+                                <!--                                        <input type="checkbox" name="option1" value="2">USER<Br>-->
+                                <!--                                        <input type="submit" value="Submit"/>-->
+                                <!--                                    </p>-->
+                                <!--                                </form>-->
+                            </div>
+                        </div>
 
-            <td th:text="${user.state}">state</td>
-            <td>
-                <form action="/admin/delete" method="post">
-                    <label>
-                        <input type="text" hidden name="id" th:value="${user.id}"/>
-                    </label>
-                    <input type="submit" value="Delete"/>
-                </form>
-            </td>
-            <td>
-                <form action="/admin/update" method="get">
-                    <label>
-                        <input type="number" hidden name="id" th:value="${user.id}"/>
-                    </label>
-                    <input type="submit" value="Update"/>
-                </form>
-            </td>
-        </tr>
-    </th:block>
-</table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
 </body>
 </html>
