@@ -29,6 +29,7 @@ public class AdminController {
     @GetMapping("/all")
     public String getUsersPage(org.springframework.ui.ModelMap model) {
         model.addAttribute("usersFromDB", userService.getAllUsers());
+        model.addAttribute("rolesFromDB", roleService.getAllRoles());
         return "allUsers_page";
     }
 
@@ -39,11 +40,11 @@ public class AdminController {
 
     @PostMapping("/add")
     public String addUser(@RequestParam("name") String name,
-                          @RequestParam("age") int age,
-                          @RequestParam("email") String email,
+                          @RequestParam("email") String mail,
                           @RequestParam("password") String password,
+                          @RequestParam("age") int age,
                           @RequestParam("option1") String r1,
-                          org.springframework.ui.Model model) {
+                          Model model) {
 
         String[] roles = r1.split(",");
         java.util.Set<Role> roleSet = new HashSet<>();
@@ -51,7 +52,7 @@ public class AdminController {
             roleSet.add(roleService.getRoleById(Integer.parseInt(s)));
         }
 
-        User user = new User(name, age, email, password, roleSet, State.ACTIVE);
+        User user = new User(name, age, mail, password, roleSet, State.ACTIVE);
         if (userService.addUser(user)) {
             return "redirect:/admin/all";
         } else {
@@ -67,7 +68,9 @@ public class AdminController {
             if (userFromDB != null) {
                 model.addAttribute("userFromDB", userFromDB);
                 model.addAttribute("rolesFromDB", roleService.getAllRoles());
-                return "update_page";
+                model.addAttribute("usersFromDB", userService.getAllUsers());
+
+                return "allUsers_page";
             } else {
                 model.addAttribute("result", "DB ERROR");
                 return "result_page";

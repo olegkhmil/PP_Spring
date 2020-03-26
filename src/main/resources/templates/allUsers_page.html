@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-            crossorigin="anonymous"></script>
+
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark flex-md p-2 ">
@@ -17,7 +15,7 @@
         <a class="nav-link" href="/logout">Logout</a>
     </ul>
 </nav>
-<div class="row no-gutters">
+<div class="row no-gutters" style="height: 3000px; background-color: #DAE0E5">
     <div class="col-sm-2 list-group py-3 bg-light">
         <a href="/admin/all"
            class="list-group-item list-group-item-action rounded-0 border-0 active">
@@ -33,12 +31,6 @@
                 <div class="card-header px-0 py-0 border-0" style="background-color: #DAE0E5">
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <!--                        <li class="nav-item border-0">-->
-                            <!--                            <a class="nav-link active border-0" href="/admin/all" data-toggle="tab">Users table</a>-->
-                            <!--                        </li>-->
-                            <!--                        <li class="nav-item">-->
-                            <!--                            <a class="nav-link" href="/admin/add" data-toggle="tab">New user</a>-->
-                            <!--                        </li>-->
                             <a class="nav-item nav-link active" id="nav-UsersTable-tab" data-toggle="tab"
                                href="#nav-UsersTable" role="tab" aria-controls="nav-UsersTable" aria-selected="true">Users
                                 table</a>
@@ -51,19 +43,19 @@
                              aria-labelledby="nav-UsersTable-tab">
                             <div class="card-body px-0 py-0 rounded-0 border-0">
                                 <h5 class="card-header border-left border-right border-bottom-0 rounded-0"
-                                    style="background-color: #EEEEEE">All
-                                    users</h5>
+                                    style="background-color: #EEEEEE">All users</h5>
+
                                 <div class="table table-sm table-responsive-sm border-left border-right py-0"
                                      style="background-color: white">
                                     <div class="container py-0">
-                                        <table class="table py-0">
+                                        <table class="table table-striped py-0">
                                             <thead>
                                             <tr>
                                                 <th>Id</th>
                                                 <th>Name</th>
                                                 <th>Age</th>
                                                 <th>email</th>
-                                                <th>password</th>
+<!--                                                <th>password</th>-->
                                                 <th>role</th>
                                                 <th>state</th>
                                                 <th colspan="2" class="text-center">Action</th>
@@ -76,7 +68,7 @@
                                                     <td th:text="${user.name}">Name</td>
                                                     <td th:text="${user.age}">Age</td>
                                                     <td th:text="${user.email}">email</td>
-                                                    <td th:text="${user.hash_password}">password</td>
+<!--                                                    <td th:text="${user.hash_password}">password</td>-->
                                                     <td>
                                                         <th:block th:each="role:${user.roles}">
                                                             <i th:text="${role.role_name}">role</i><br>
@@ -86,21 +78,108 @@
                                                     <td th:text="${user.state}">state</td>
                                                     <td>
                                                         <form action="/admin/delete" method="post">
-                                                            <label>
-                                                                <input type="text" hidden name="id"
-                                                                       th:value="${user.id}"/>
-                                                            </label>
-                                                            <input type="submit" value="Delete"/>
+
+                                                            <input type="text" hidden name="id"
+                                                                   th:value="${user.id}"/>
+
+                                                            <button type="submit" class="btn btn-danger">Del</button>
                                                         </form>
                                                     </td>
                                                     <td>
-                                                        <form action="/admin/update" method="get">
-                                                            <label>
-                                                                <input type="number" hidden name="id"
-                                                                       th:value="${user.id}"/>
-                                                            </label>
-                                                            <input type="submit" value="Update"/>
-                                                        </form>
+                                                        <button type="submit" class="btn btn-success"
+                                                                data-toggle="modal"
+                                                                th:data-target="${'#editUser'+ user.id}">
+                                                            Edit
+                                                        </button>
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" th:id="${'editUser'+user.id}"
+                                                             tabindex="-1"
+                                                             role="dialog" aria-labelledby="exampleModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <form class="form-group-input" action="/admin/update"
+                                                                      method="post">
+                                                                    <input type="hidden" name="id"
+                                                                           th:value="${user.id}">
+                                                                    <input type="hidden" name="oldPass"
+                                                                           th:value="${user.hash_password}">
+                                                                    <div class="modal-content">
+
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title"
+                                                                                id="exampleModalLabel"
+                                                                                th:text="${'Edit user: '+ user.name}"></h5>
+                                                                            <button type="button" class="close"
+                                                                                    data-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                <span aria-hidden="true">&times;</span>
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+
+                                                                            <div class="form-group">
+                                                                                <b class="d-flex justify-content-center">Name:</b>
+                                                                                <input type="text" name="name"
+                                                                                       class="form-control"
+                                                                                       th:value="${user.name}">
+                                                                            </div>
+                                                                            <b class="d-flex justify-content-center">Age:</b>
+                                                                            <input type="number" name="age"
+                                                                                   class="form-control"
+                                                                                   th:value="${user.age}"/>
+                                                                            <b class="d-flex justify-content-center">Email:</b>
+                                                                            <input type="text" name="email"
+                                                                                   class="form-control"
+                                                                                   th:value="${user.email}"/>
+                                                                            <b class="d-flex justify-content-center">Password:</b>
+                                                                            <input type="password"
+                                                                                   name="newPass" class="form-control"
+                                                                                   value=""><br/>
+                                                                            <div class="form-row">
+                                                                                <div class="col-6 ">
+                                                                                    <label class="mr-sm-2" for="inlineFormCustomSelect">State:</label>
+                                                                                    <select class="custom-select mr-sm-2" name="state" id="inlineFormCustomSelect">
+
+                                                                            <option th:value="${user.state}"><i
+                                                                                    th:text="${user.state}"></i>
+                                                                            </option>
+                                                                            <option value="DELETED">DELETED</option>
+                                                                            <option value="ACTIVE">ACTIVE</option>
+                                                                            <option value="BANNED">BANNED</option>
+                                                                        </select><br/>
+                                                                                </div>
+
+                                                                                <div class="col-6" id="role">
+                                                                                <div class="row px-3">Role</div>
+
+                                                                                <th:block th:each="role:${rolesFromDB}">
+                                                                                    <input type="checkbox"
+                                                                                           name="option1"
+                                                                                           th:value="${role.id}"
+                                                                                           th:checked="${user.roles.contains(role)}">
+                                                                                    <span th:text="${role.role_name}"></span><br>
+                                                                                </th:block>
+
+                                                                                </div>
+
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button type="button"
+                                                                                    class="btn btn-secondary"
+                                                                                    data-dismiss="modal">Close
+                                                                            </button>
+                                                                            <button type="submit"
+                                                                                    class="btn btn-primary">Save changes
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             </th:block>
@@ -115,39 +194,56 @@
                             <div class="card-body px-0 py-0 rounded-0">
                                 <h5 class="card-header border-0 rounded-0" style="background-color: #EEEEEE">New
                                     user</h5>
-                                <div class="container bg-white">
-                                    <form action="/admin/add" method="post">
-                                        <div class="form-group py-2">
-                                            <label for="exampleInputEmail1"><b>Email</b></label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1"><b>Email</b></label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">Password</label>
-                                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                        </div>
-                                        <div class="form-group form-check">
-                                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Submit</button>
-                                    </form>
+                                <div class="container  bg-white">
+                                    <div class="container col-sm-4">
+                                        <form class="form-group-input" action="/admin/add" method="post">
+
+                                            <div class="form-group">
+                                                <b class="d-flex justify-content-center">Name:</b>
+                                                <input type="text" name="name" class="form-control" placeholder="Login">
+                                            </div>
+                                            <div class="form-group">
+                                                <b class="d-flex justify-content-center">Age:</b>
+                                                <input type="number" name="age" class="form-control" placeholder="Age">
+                                            </div>
+                                            <div class="form-group">
+                                                <b class="d-flex justify-content-center">Email:</b>
+                                                <input type="email" name="email" class="form-control"
+                                                       placeholder="Email">
+                                            </div>
+                                            <div class="form-group">
+                                                <b class="d-flex justify-content-center">Password:</b>
+                                                <input type="password" name="password" class="form-control"
+                                                       placeholder="Password">
+                                            </div>
+                                            <div class="row px-5">
+
+                                                <div class="col-sm">
+                                                    <div class="form-group form-check-inline">
+                                                        <label class="form-check-label" for="adm">
+                                                            <b>Role:_</b>
+                                                        </label>
+                                                        <input class="form-check-input" type="checkbox" name="option1"
+                                                               value="1" id="adm">
+                                                        <label class="form-check-label" for="adm">
+                                                            Admin
+                                                        </label>
+
+                                                        <input class="form-check-input" type="checkbox" name="option1"
+                                                               value="2" id="us">
+                                                        <label class="form-check-label" for="us">
+                                                            User
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-center">
+                                                <button type="submit" class="btn btn-success">Add new user</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
-                                <!--                                <form action="/admin/add" method="post">-->
-                                <!--                                    <p align="center">-->
-                                <!--                                        Name: <input type="text" name="name"/><br/>-->
-                                <!--                                        Age: <input type="number" name="age"/><br/>-->
-                                <!--                                        Email: <input type="text" name="email"/><br/>-->
-                                <!--                                        Password: <input type="password" name="password"><br/>-->
-                                <!--                                        Role:-->
-                                <!--                                        <input type="checkbox" name="option1" value="1">ADMIN<Br>-->
-                                <!--                                        <input type="checkbox" name="option1" value="2">USER<Br>-->
-                                <!--                                        <input type="submit" value="Submit"/>-->
-                                <!--                                    </p>-->
-                                <!--                                </form>-->
+
                             </div>
                         </div>
 
