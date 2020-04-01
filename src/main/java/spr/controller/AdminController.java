@@ -1,8 +1,10 @@
 package spr.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import spr.model.Role;
 import spr.model.State;
@@ -17,17 +19,17 @@ import java.util.HashSet;
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
-    private org.springframework.security.crypto.password.PasswordEncoder pe;
+    private PasswordEncoder pe;
 
     @Autowired
-    public AdminController(UserService userService, RoleService roleService, org.springframework.security.crypto.password.PasswordEncoder pe) {
+    public AdminController(UserService userService, RoleService roleService, PasswordEncoder pe) {
         this.userService = userService;
         this.roleService = roleService;
         this.pe = pe;
     }
 
     @GetMapping("/all")
-    public String getUsersPage(org.springframework.ui.ModelMap model) {
+    public String getUsersPage(ModelMap model) {
         model.addAttribute("usersFromDB", userService.getAllUsers());
         model.addAttribute("rolesFromDB", roleService.getAllRoles());
         return "allUsers_page";
