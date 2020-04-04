@@ -9,7 +9,7 @@ import spr.repository.UserRepository;
 
 @Service
 @Transactional
-public class UserDetailsServiceImpl implements org.springframework.security.core.userdetails.UserDetailsService {
+public class UserDetailsServiceImpl implements UserDetailsService {
     private UserRepository userRepository;
 
     @Autowired

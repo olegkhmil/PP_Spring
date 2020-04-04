@@ -2,8 +2,10 @@ package spr.service;
 
 import spr.model.Role;
 
+import java.util.List;
+
 public interface RoleService {
-    java.util.List<Role> getAllRoles();
+    List<Role> getAllRoles();
 
     Role getRoleById(Integer id);
 

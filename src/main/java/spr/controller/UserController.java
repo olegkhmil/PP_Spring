@@ -3,6 +3,7 @@ package spr.controller;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import spr.security.details.UserDetailsImpl;
@@ -13,7 +14,7 @@ import spr.security.transfer.UserDTO;
 public class UserController {
 
     @GetMapping
-    public String userPage(Authentication authentication, org.springframework.ui.Model model) {
+    public String userPage(Authentication authentication, Model model) {
         if (authentication == null) {
             return "redirect:/login";
         }

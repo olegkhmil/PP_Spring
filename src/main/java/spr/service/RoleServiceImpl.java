@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spr.model.Role;
 import spr.repository.RoleRepository;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
@@ -18,7 +20,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public java.util.List<Role> getAllRoles() {
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
 
