@@ -13,13 +13,14 @@ import spr.service.RoleService;
 import spr.service.UserService;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
-    private PasswordEncoder pe;
+    private final PasswordEncoder pe;
 
     @Autowired
     public AdminController(UserService userService, RoleService roleService, PasswordEncoder pe) {
@@ -29,9 +30,9 @@ public class AdminController {
     }
 
     @GetMapping("/all")
-    public String getUsersPage(ModelMap model) {
-        model.addAttribute("usersFromDB", userService.getAllUsers());
-        model.addAttribute("rolesFromDB", roleService.getAllRoles());
+    public String getUsersPage() {
+//        model.addAttribute("usersFromDB", userService.getAllUsers());
+//        model.addAttribute("rolesFromDB", roleService.getAllRoles());
         return "allUsers_page";
     }
 
@@ -89,15 +90,15 @@ public class AdminController {
                              @RequestParam("newPass") String newPass,
                              @RequestParam("option1") String r1,
                              Model model) {
-        java.util.Set<Role> roleSet = new HashSet<>();
+        Set<Role> roleSet = new HashSet<>();
         String[] roles = r1.split(",");
         for (String s : roles) {
             roleSet.add(roleService.getRoleById(Integer.parseInt(s)));
         }
         user.setRoles(roleSet);
         if (newPass.equals("")) {
-            user.setHash_password(oldPass);
-        } else user.setHash_password(pe.encode(newPass));
+            user.setPassword(oldPass);
+        } else user.setPassword(pe.encode(newPass));
 
         if (userService.updateUser(user)) {
             return "redirect:/admin/all";

@@ -1,5 +1,7 @@
 package spr.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -8,25 +10,27 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
-    private String role_name;
+    private String name;
 
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private java.util.Set<User> users;
+    private Set<User> users;
 
     public Role() {
     }
 
-    public Role(String role_name) {
-        this.role_name = role_name;
+    public Role(String name) {
+        this.name = name;
     }
 
     public Integer getId() {
@@ -37,12 +41,12 @@ public class Role implements GrantedAuthority {
         this.id = id;
     }
 
-    public String getRole_name() {
-        return role_name;
+    public String getName() {
+        return name;
     }
 
-    public void setRole_name(String name) {
-        this.role_name = name.toUpperCase();
+    public void setName(String name) {
+        this.name = name.toUpperCase();
     }
 
     public java.util.Set<User> getUsers() {
@@ -58,21 +62,21 @@ public class Role implements GrantedAuthority {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Role role = (Role) o;
-        return Objects.equals(role_name, role.role_name);
+        return Objects.equals(name, role.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(role_name);
+        return Objects.hash(name);
     }
-
+    @JsonIgnore
     @Override
     public String getAuthority() {
-        return role_name;
+        return name;
     }
 
     @Override
     public String toString() {
-        return role_name;
+        return name;
     }
 }

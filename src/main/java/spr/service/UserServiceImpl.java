@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.readAllUsers();
     }
 
     @Override
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addUser(User user) {
-        user.setHash_password(passwordEncoder.encode(user.getHash_password()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         if (userRepository.findByName(user.getName()) == null) {
             userRepository.save(user);
             return true;

@@ -1,11 +1,15 @@
 package spr.model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+
 public class User {
 
     @Id
@@ -19,10 +23,10 @@ public class User {
 
     @Column(name = "email")
     private String email;
-    @Column(name = "hash_password")
-    private String hash_password;
-    @Transient
+    @Column(name = "password")
     private String password;
+
+    //@JsonIgnoreProperties({"hibernateLazyInitializer"})
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -33,26 +37,50 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private State state;
 
+
     public User() {
     }
 
-    public User(Long id, String name, int age, String email, String hash_password) {
+    public User(Long id, String name, int age, String email, String password) {
         this.id = id;
         this.name = name;
         this.age = age;
         this.email = email;
-        this.hash_password = hash_password;
+        this.password = password;
     }
 
-    public User(String name, int age, String email, String hash_password, Set<Role> roles, State state) {
+    public User(String name, int age, String email, String password) {
         this.name = name;
         this.age = age;
         this.email = email;
-        this.hash_password = hash_password;
+        this.password = password;
+    }
+
+    public User(String name, int age, String email, String password, Set<Role> roles, State state) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
         this.roles = roles;
         this.state = state;
     }
 
+    public User(Long id, String name, int age, String email, String password, Set<Role> roles, State state) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+        this.state = state;
+    }
+    public User(String name, int age, String email, String password, Set<Role> roles) {
+        this.name = name;
+        this.age = age;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
     public Long getId() {
         return id;
     }
@@ -101,13 +129,6 @@ public class User {
         this.state = state;
     }
 
-    public String getHash_password() {
-        return hash_password;
-    }
-
-    public void setHash_password(String hash_password) {
-        this.hash_password = hash_password;
-    }
 
     public Set<Role> getRoles() {
         if (roles != null)
@@ -119,4 +140,16 @@ public class User {
         this.roles = roles;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", state=" + state +
+                '}';
+    }
 }
