@@ -17,7 +17,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
     <script src="/js/jquery.json.js"></script>
     <!--    <script type="text/javascript" src="/js/bootstrap-4.4.1-dist/js/bootstrap.bundle.js"></script>-->
-
+    <link rel="shortcut icon" href="/js/favicon.ico" type="image/x-icon">
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark flex-md p-2 ">
@@ -314,12 +314,12 @@
                                                     <select class="custom-select mr-sm-2" name="state"
                                                             id="selectorEdit">
 
-                                                        <option id="optionUserState"
+                                                        <option class="opt" id="optionUserState"
                                                                 value="${user.state}">
                                                         </option>
-                                                        <option value="DELETED">DELETED</option>
-                                                        <option value="ACTIVE">ACTIVE</option>
-                                                        <option value="BANNED">BANNED</option>
+                                                        <option class="opt" value="DELETED">DELETED</option>
+                                                        <option class="opt" value="ACTIVE">ACTIVE</option>
+                                                        <option class="opt" value="BANNED">BANNED</option>
                                                     </select><br/>
                                                 </div>
 
@@ -339,7 +339,8 @@
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button"
+                                                <button id="dismissModal"
+                                                        type="button"
                                                         class="btn btn-secondary"
                                                         data-dismiss="modal">Close
                                                 </button>

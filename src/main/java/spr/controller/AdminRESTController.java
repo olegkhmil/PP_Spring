@@ -20,23 +20,25 @@ import java.util.Set;
 @RequestMapping("/rest")
 public class AdminRESTController {
 
+    private final UserService userService;
+    private final RoleService roleService;
+    private final PasswordEncoder pe;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleService roleService;
-    @Autowired
-    private PasswordEncoder pe;
+    public AdminRESTController(UserService userService, RoleService roleService, PasswordEncoder pe) {
+        this.userService = userService;
+        this.roleService = roleService;
+        this.pe = pe;
+    }
 
     @GetMapping("/all")
     public List<User> getAll() {
-        System.out.println(userService.getAllUsers().toString());
         return userService.getAllUsers();
     }
 
     @GetMapping("/userById/{id}")
-    public ResponseEntity<User> getUserByID(@PathVariable("id") Long id){
+    public ResponseEntity<User> getUserByID(@PathVariable("id") Long id) {
         User user = userService.getUserById(id);
-        System.out.println(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
@@ -55,8 +57,7 @@ public class AdminRESTController {
         }
         user.setRoles(roleSet);
         if (userService.addUser(user)) {
-           User user1 = userService.getUserByName(user.getName());
-            System.out.println(user1.toString());
+            User user1 = userService.getUserByName(user.getName());
             return new ResponseEntity<>(user1, HttpStatus.OK);
         } else {
             return ResponseEntity.badRequest().build();
@@ -74,7 +75,7 @@ public class AdminRESTController {
     public ResponseEntity<User> updateUser(@RequestBody User user) {
         Set<Role> roleSet = new HashSet<>();
 
-        user.setState(State.ACTIVE);
+
         for (Role s : user.getRoles()) {
             roleSet.add(roleService.getRoleById(Integer.parseInt(s.getName())));
         }
@@ -90,6 +91,5 @@ public class AdminRESTController {
         } else {
             return ResponseEntity.badRequest().build();
         }
-
     }
 }

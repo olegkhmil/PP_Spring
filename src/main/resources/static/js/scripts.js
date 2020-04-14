@@ -26,9 +26,6 @@ $('#tbody').on('click', '.btn-danger', function () {
     //$('#nav-UsersTable-tab').trigger('active')
 });
 
-function deleteUser(id) {
-
-}
 
 // ДОБАВЛЕНИЕ ЮЗЕРА
 $('#add_form').on("submit", function (e) {
@@ -39,7 +36,6 @@ $('#add_form').on("submit", function (e) {
     })
 
     let user = {
-        id: $('#hidEditID').val(),
         name: $('#newUserName').val(),
         age: parseInt($('#newUserAge').val()),
         email: $('#newUserEmail').val(),
@@ -54,23 +50,18 @@ $('#add_form').on("submit", function (e) {
         type: "POST",
         data: user,
         dataType: "json",
-        async: false,
         success: function (data) {
-            alert(data)
         },
         error: function (data) {
             alert("error")
         },
         complete: function () {
-            loadAllUsersOnPage()
             $('#add_form').each(function () {
                 this.reset();  //очищается форма методом .reset()
             });
-            toAdminPanel();
+            $('#nav-UsersTable-tab').trigger('click');
         }
     });
-    $('#nav-UsersTable-tab').click()
-    //$('#nav-UsersTable-tab').click()
 });
 
 
@@ -79,8 +70,12 @@ $('#editUserForm').on('submit', function (e) {
     e.preventDefault()
     let uRoles = [];
     $('.form-check-input:checked').each(function () {
-        uRoles.push($(this).val())
-    })
+        uRoles.push($(this).val());
+    });
+    let st = null;
+    $('.opt:selected').each(function () {
+        st = ($(this).val());
+    });
 
     let user = {
         id: $('#hidEditID').val(),
@@ -88,7 +83,7 @@ $('#editUserForm').on('submit', function (e) {
         age: parseInt($('#editAge').val()),
         email: $('#editEmail').val(),
         password: $('#editPass').val(),
-        state: $('#optionUserState').val(),
+        state: st,
         roles: uRoles
     }
     user = $.toJSON(user);
@@ -100,16 +95,16 @@ $('#editUserForm').on('submit', function (e) {
         dataType: "json",
         async: false,
         success: function (data) {
-            alert("Успех")
         },
         error: function (data) {
             alert("Провал")
         },
         complete: function () {
-            loadAllUsersOnPage();
-            $('#editUserModal').fadeOut();
-            $('.modal-backdrop').remove();
-
+            $('#editUserForm').each(function () {
+                this.reset();  //очищается форма методом .reset()
+            });
+            $('#dismissModal').trigger('click');
+            $('#nav-UsersTable-tab').trigger('click');
         }
     });
 
@@ -184,17 +179,4 @@ function openEditUserModal(id) {
             }
         }
     });
-}
-
-
-function toAdminPanel() {
-    $('#nav-UsersTable').attr('class', 'tab-pane fade active show');
-    $('#nav-newUser').attr('class', 'tab-pane fade');
-
-}
-
-function hideModal() {
-    $('#editUserModal').removeClass('show').attr('style', "display: none;");
-    $('body').removeAttr('style');
-    $('body').removeAttr('class');
 }
